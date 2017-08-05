@@ -28,6 +28,14 @@ public class Battle {
         return hero.isAlive() ? hero : monster;
     }
 
+    public Hero getHero () {
+        return hero;
+    }
+
+    public Monster getMonster () {
+        return monster;
+    }
+
     private int attackDamage () {
         return rnd.nextInt(10);
     }

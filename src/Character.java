@@ -24,13 +24,17 @@ public abstract class Character {
     }
 
     public void damage (int damage) {
-        System.out.println(name + " hp " + hp);
         hp -= damage;
+        System.out.println(name + " hp " + hp);
     }
 
     public void heal (int healing) {
-        System.out.println(name + " hp " + hp);
         hp += healing;
+        System.out.println(name + " hp " + hp);
+    }
+
+    public String toString () {
+        return name + "(" + hp + ")";
     }
 
 }

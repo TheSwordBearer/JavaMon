@@ -43,7 +43,9 @@ public class JavaMon extends JFrame {
         Hero hero = new Hero("Knight", 100);
         Monster monster = new Monster("Goblin Warrior", 20);
         Battle battle = new Battle(hero, monster);
-        battle.battle();
+        battleGround.setBattle(battle);
+        Character winner = battle.battle();
+        System.out.println(">> " + winner + " won the battle!");
     }
 
     public static void main (String[] args) {
