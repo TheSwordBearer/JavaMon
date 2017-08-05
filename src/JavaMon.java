@@ -26,7 +26,7 @@ public class JavaMon extends JFrame {
     private BattleGround battleGround = new BattleGround();
 
     public JavaMon () {
-        setSize(500,500);
+        setSize(640,480);
         setTitle("JavaMon");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
