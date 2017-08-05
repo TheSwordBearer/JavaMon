@@ -11,7 +11,7 @@ public class JavaMon extends JFrame {
     private Action startAction = new AbstractAction("Start") {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Starting...");
+            startGame();
         }
     };
     private Action exitAction = new AbstractAction("Exit") {
@@ -23,6 +23,7 @@ public class JavaMon extends JFrame {
     private JButton start = new JButton(startAction);
     private JButton exit = new JButton(exitAction);
     private Box buttons = Box.createHorizontalBox();
+    private BattleGround battleGround = new BattleGround();
 
     public JavaMon () {
         setSize(500,500);
@@ -32,8 +33,17 @@ public class JavaMon extends JFrame {
         buttons.add(Box.createGlue());
         buttons.add(start);
         buttons.add(exit);
+        buttons.add(Box.createGlue());
         getContentPane().add(buttons, BorderLayout.SOUTH);
+        getContentPane().add(battleGround, BorderLayout.CENTER);
         setVisible(true);
+    }
+
+    private void startGame () {
+        Hero hero = new Hero("Knight", 100);
+        Monster monster = new Monster("Goblin Warrior", 20);
+        Battle battle = new Battle(hero, monster);
+        battle.battle();
     }
 
     public static void main (String[] args) {

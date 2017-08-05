@@ -3,5 +3,7 @@
  */
 public class Monster extends Character {
 
-    
+    public Monster (String name, int hp) {
+        super(name, hp);
+    }
 }
