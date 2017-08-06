@@ -8,13 +8,15 @@ import javax.swing.*;
  */
 public class BattleGround extends JPanel {
 
-    private Hero hero = new Hero("Knight", 100, "knight.png");
-    private Monster monster = null;
+    private JavaMon game;
+
+    private Hero hero = new Hero("Knight", 50, "knight.png");
     private Monster goblin = new Monster("Goblin Warrior", 20, "goblin.png");
     private Monster mage = new Monster("Mage", 20, "mage.png");
     private Monster beholder = new Monster("Beholder", 40, "beholder.png");
     private Monster blackKnight = new Monster("Black Knight", 50, "black-knight.png");
-    
+    private Monster monster = null;
+
     private JLabel heroLabel = new JLabel();
     private JLabel monsterLabel = new JLabel();
 
@@ -48,9 +50,10 @@ public class BattleGround extends JPanel {
     private JButton heal = new JButton(healAction);
     private JButton block = new JButton(blockAction);
 
-    public BattleGround () {
+    public BattleGround (JavaMon game) {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
+        this.game = game;
         monsterLabel.setHorizontalTextPosition(SwingConstants.CENTER);
         monsterLabel.setVerticalTextPosition(SwingConstants.TOP);
         heroLabel.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -66,7 +69,11 @@ public class BattleGround extends JPanel {
         add(buttonBox, BorderLayout.SOUTH);
     }
 
-    public void doBattle () {
+    public void startGame() {
+        attackAction.setEnabled(true);
+        magicAction.setEnabled(true);
+        healAction.setEnabled(true);
+        blockAction.setEnabled(true);
         hero.fullyHeal();
         goblin.fullyHeal();
         mage.fullyHeal();
@@ -77,7 +84,7 @@ public class BattleGround extends JPanel {
     }
 
     private void update() {
-        if (!monster.isAlive()) {
+        if (monster.isDead()) {
             nextMonster();
         }
         heroLabel.setIcon(hero.getImageIcon());
@@ -98,9 +105,9 @@ public class BattleGround extends JPanel {
 
     private void doAction (Character actor, Character target, String action) {
         switch (action) {
-            case "Attack": target.damage(10); break;
-            case "Magic": target.damage(10); break;
-            case "Heal": actor.heal(10); break;
+            case "Attack": target.attack(actor.getDamage()); break;
+            case "Magic": target.magic(actor.getDamage()); break;
+            case "Heal": actor.heal(); break;
             case "Block": actor.block(); break;
         }
         update();
@@ -108,8 +115,34 @@ public class BattleGround extends JPanel {
 
     private void takeTurn (String heroAction) {
         doAction(hero, monster, heroAction);
-        doAction(monster, hero, monster.pickAction());
         update();
+        checkWin();
+        String monsterAction = monster.pickAction();
+        doAction(monster, hero, monsterAction);
+        update();
+        checkLose();
+    }
+
+    private void checkWin() {
+        if (blackKnight.isDead()) {
+            JOptionPane.showMessageDialog(this, "You Won!!");
+            reset();
+        }
+    }
+
+    private void checkLose() {
+        if (hero.isDead()) {
+            JOptionPane.showMessageDialog(this, "You Lose!!");
+            reset();
+        }
+    }
+
+    private void reset () {
+        attackAction.setEnabled(false);
+        magicAction.setEnabled(false);
+        healAction.setEnabled(false);
+        blockAction.setEnabled(false);
+        game.reset();
     }
 
 }

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +15,8 @@ public abstract class Character {
     private boolean blocking = false;
     private ImageIcon image;
 
+    private Random random = new Random();
+
     public Character (String name, int hp, String image) {
           this.name = name;
           this.maxHp = hp;
@@ -25,27 +28,19 @@ public abstract class Character {
         }
     }
 
-    public String getName () {
-        return name;
-    }
-
-    public int getHp () {
-        return hp;
-    }
-
     public ImageIcon getImageIcon() {
         return image;
     }
 
-    public boolean isAlive () {
-        return hp > 0;
+    public boolean isDead () {
+        return hp <= 0;
     }
 
     public void block () {
         blocking = true;
     }
 
-    public void damage (int damage) {
+    public void attack (int damage) {
         if (blocking) {
             blocking = false;
         } else {
@@ -53,7 +48,20 @@ public abstract class Character {
         }
     }
 
-    public void heal (int healing) {
+    public void magic (int damage) {
+        if (blocking) {
+            blocking = false;
+        } else {
+            hp -= damage;
+        }
+    }
+
+    public int getDamage() {
+        return random.nextInt(11) + 5; // 5-15
+    }
+
+    public void heal () {
+        int healing = random.nextInt(10) + 1; // 1-10
         hp = Math.min(maxHp, hp + healing);
     }
 
@@ -62,7 +70,11 @@ public abstract class Character {
     }
 
     public String toString () {
-        return name + " " + hp + "/" + maxHp;
+        if (isDead()) {
+            return name + " (Dead)";
+        } else {
+            return name + " " + hp + "/" + maxHp;
+        }
     }
 
 }

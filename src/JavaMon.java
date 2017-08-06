@@ -26,7 +26,7 @@ public class JavaMon extends JFrame {
     private JButton start = new JButton(startAction);
     private JButton exit = new JButton(exitAction);
     private Box buttons = Box.createHorizontalBox();
-    private BattleGround battleGround = new BattleGround();
+    private BattleGround battleGround = new BattleGround(this);
     private JLabel background = new JLabel();
 
     public JavaMon () {
@@ -53,7 +53,11 @@ public class JavaMon extends JFrame {
         startAction.setEnabled(false);
         getContentPane().remove(background);
         getContentPane().add(battleGround, BorderLayout.CENTER);
-        battleGround.doBattle();
+        battleGround.startGame();
+    }
+
+    public void reset () {
+        startAction.setEnabled(true);
     }
 
     public static void main (String[] args) {
