@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -20,13 +22,20 @@ public class JavaMon extends JFrame {
             System.exit(0);
         }
     };
+    
     private JButton start = new JButton(startAction);
     private JButton exit = new JButton(exitAction);
     private Box buttons = Box.createHorizontalBox();
     private BattleGround battleGround = new BattleGround();
+    private JLabel background = new JLabel();
 
     public JavaMon () {
-        setSize(640,480);
+        try {
+            background.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("JavaMon.png"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setSize(500,300);
         setTitle("JavaMon");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -35,21 +44,20 @@ public class JavaMon extends JFrame {
         buttons.add(exit);
         buttons.add(Box.createGlue());
         getContentPane().add(buttons, BorderLayout.SOUTH);
-        getContentPane().add(battleGround, BorderLayout.CENTER);
+        getContentPane().add(background, BorderLayout.CENTER);
         setVisible(true);
+
     }
 
     private void startGame () {
-        Hero hero = new Hero("Knight", 100);
-        Monster monster = new Monster("Goblin Warrior", 20);
-        Battle battle = new Battle(hero, monster);
-        battleGround.setBattle(battle);
-        Character winner = battle.battle();
-        System.out.println(">> " + winner + " won the battle!");
+        startAction.setEnabled(false);
+        getContentPane().remove(background);
+        getContentPane().add(battleGround, BorderLayout.CENTER);
+        battleGround.doBattle();
     }
 
     public static void main (String[] args) {
-        JavaMon frame = new JavaMon();
+        new JavaMon();
     }
 
 }
